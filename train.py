@@ -61,6 +61,7 @@ class DataEngine():
         self.MIN_TEXT_LEN = 20
         self.EOS_TOKEN_ID = 2
         self.data_dir = data_dir
+        # 直接用 sentencepiece 加载 tokenizer
         self.sp = spm.SentencePieceProcessor()
         self.sp.Load(tokenizer_path)
         self.micro_batch_size = micro_batch_size
@@ -125,6 +126,7 @@ def train(data_engine, model_engine):
     model_engine.train()
     step = 0
     while step < args.steps_per_epoch:
+        # 看起来这个流程是真的简单
         data = data_engine.get_data()
         loss = model_engine(data, labels=data).loss
         model_engine.backward(loss)
